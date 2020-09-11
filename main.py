@@ -5,7 +5,6 @@ import time
 size = 50
 
 def ask(screen):
-	screen = pg.display.set_mode((800, 200))
 	screen.fill((47,79,79))
 	pg.display.update()
 	clock = pg.time.Clock()
@@ -44,8 +43,10 @@ def drawSoln(screen, soln, posArray):
 		pg.display.update()
 
 def main():
-	screen = pg.display.set_mode((300,100))
+	screen = pg.display.set_mode((800,200))
 	pg.display.set_caption('Enter N:')
+	icon = pg.image.load('img/dark.png')
+	pg.display.set_icon(icon)
 	pg.display.update()
 	n=int(ask(screen))
 	done = False
@@ -53,6 +54,7 @@ def main():
 	screen = pg.display.set_mode((size*n, size*n))
 	pg.display.set_caption('Solution of N Queens')
 	posArray = []
+	
 	for x in range(n):
 		tempPos = []
 		for y in range(n):
@@ -60,9 +62,21 @@ def main():
 			if((x+y)&1^1):
 				pg.draw.rect(screen, (112,128,144), (x*size, y*size, size, size))
 		posArray.append(tempPos)
+	
 	soln = Solver.solver([], n)
-	drawSoln(screen, soln, posArray)
+	
+	if soln:
+		drawSoln(screen, soln, posArray)
+	else:
+		screen = pg.display.set_mode((800,200))
+		font = pg.font.Font(None, 32)
+		surf = font.render("Solution does not Exist!", True, (0,0,0), (47,79,79))
+		rect = surf.get_rect()
+		rect.center = (400, 100)
+		screen.blit(surf,rect)
+	
 	pg.display.update()
+	
 	while not done:
 		for event in pg.event.get():
 			if event.type == pg.QUIT:
