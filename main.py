@@ -2,10 +2,13 @@ import Solver
 import pygame as pg
 from pygame.locals import *
 import time
-size = 50
+size = 50 						# size of a square in px
+bg_white = (112,128,144)		# chess black square bg color
+bg_black = (47,79,79)			# chessboard white square bg color
+
 
 def ask(screen):
-	screen.fill((47,79,79))
+	screen.fill(bg_black)
 	pg.display.update()
 	clock = pg.time.Clock()
 	font = pg.font.Font(None, 32)
@@ -13,7 +16,7 @@ def ask(screen):
 	inp = ""
 	while not done:
 		for event in pg.event.get():
-			surf = font.render("Enter dimension of chessboard then press ENTER: "+inp, True, (0,0,0), (47,79,79))
+			surf = font.render("Enter dimension of chessboard then press ENTER: "+inp, True, (0,0,0), bg_black)
 			rect = surf.get_rect()
 			rect.center = (400, 100)
 			screen.blit(surf,rect)
@@ -50,7 +53,7 @@ def main():
 	pg.display.update()
 	n=int(ask(screen))
 	done = False
-	screen.fill((47,79,79))
+	screen.fill(bg_black)
 	screen = pg.display.set_mode((size*n, size*n))
 	pg.display.set_caption('Solution of N Queens')
 	posArray = []
@@ -60,7 +63,7 @@ def main():
 		for y in range(n):
 			tempPos.append((size*(x), size*(y)))
 			if((x+y)&1^1):
-				pg.draw.rect(screen, (112,128,144), (x*size, y*size, size, size))
+				pg.draw.rect(screen, bg_white, (x*size, y*size, size, size))
 		posArray.append(tempPos)
 	
 	soln = Solver.solver([], n)
@@ -70,7 +73,7 @@ def main():
 	else:
 		screen = pg.display.set_mode((800,200))
 		font = pg.font.Font(None, 32)
-		surf = font.render("Solution does not Exist!", True, (0,0,0), (47,79,79))
+		surf = font.render("Solution does not Exist!", True, (0,0,0), bg_black)
 		rect = surf.get_rect()
 		rect.center = (400, 100)
 		screen.blit(surf,rect)
